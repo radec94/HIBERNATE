@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="hb.Concessionari" table="CONCESSIONARI">
+      <meta attribute="class-description">
+		Aquesta classe conte els detalls del concesionari
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="increment"/>
+      </id>
+      <set name="vehicles" cascade="all">
+         <key column="concessionari_id"/>
+         <one-to-many class="hb.Vehicles"/>
+      </set>
+      <property name="nom" column="nom" type="string"/>
+      <property name="pais" column="pais" type="string"/>
+	  <set name="clients" cascade="all">
+         <key column="clients_id"/>
+         <one-to-many class="hb.Clients"/>
+      </set>
+   </class>
+
+   <class name="hb.Vehicles" table="VEHICLES">
+      <meta attribute="class-description">
+        Aquesta classe conte els detalls dels vehicles
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="model" column="model" type="string"/>
+	  <property name="versio" column="versio" type="string"/>
+	  <many-to-one name="fabricant" column="fabricant" 
+       class="hb.Fabricant" not-null="true"/>
+	   
+	   <many-to-one name="ficha_tecnica" column="ficha_tecnica" unique="true" 
+       class="hb.Ficha_tecnica" not-null="true"/>
+   </class>
+   
+   <class name="hb.Ficha_tecnica" table="FICHA_TECNICA">
+      <meta attribute="class-description">
+         Aquesta classe conte els detalls dels adreca
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="altura" column="altura" type="string"/>
+      <property name="amplada" column="amplada" type="int"/>
+      <property name="descripcio" column="descripcio" type="string"/>
+   </class>
+   
+   
+   <class name="hb.Fabricant" table="FABRICANT">
+      <meta attribute="class-description">
+        Aquesta classe conte els detalls del fabricant
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="nom" column="nom" type="string"/>
+      <property name="pais" column="pais" type="string"/>
+   </class>
+
+   <class name="hb.Clients" table="CLIENTS">
+      <meta attribute="class-description">
+         Aquesta classe conte els detalls dels clients
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+      <property name="nom" column="nom" type="string"/>
+	  <property name="telefon" column="telefon" type="int"/>
+	  
+	  <component name="adreca" class="hb.Adreca">
+         <property name="carrer" column="carrer" type="string"/>
+         <property name="codi_postal" column="codi_postal" type="int"/>
+         <property name="poblacio" column="poblacio" type="string"/>
+      </component>
+	  
+   </class>
+   
+</hibernate-mapping>
